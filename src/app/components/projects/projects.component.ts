@@ -69,7 +69,7 @@ import { ProjectModalComponent } from '../project-modal/project-modal.component'
                     [class.active]="filterLang() === lang"
                     (click)="filterLang.set(lang)"
                     class="filter-btn">
-              {{ lang === 'all' ? 'todos' : lang }}
+              {{ lang === 'all' ? 'Todos' : lang }}
             </button>
           </div>
           <div class="search-box">
