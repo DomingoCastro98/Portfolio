@@ -171,6 +171,10 @@ const EMAILJS_TEMPLATE_ID: string = 'template_f8pm19o';
       align-items: start;
       margin-bottom: 5rem;
     }
+    .contact-right {
+      align-self: start;
+      transform: translateY(clamp(2.5rem, 5vw, 5rem));
+    }
     .contact-desc {
       font-size: 0.98rem;
       color: var(--text-secondary);
@@ -260,7 +264,7 @@ const EMAILJS_TEMPLATE_ID: string = 'template_f8pm19o';
       word-break: break-word;
     }
 
-    .contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 7rem; }
     .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
     .form-label {
       font-family: var(--font-mono);
@@ -380,6 +384,11 @@ const EMAILJS_TEMPLATE_ID: string = 'template_f8pm19o';
       .contact-left,
       .contact-right {
         text-align: center;
+      }
+      .contact-right {
+        margin-top: 0;
+        padding-top: 0;
+        transform: none;
       }
       .contact-left .section-label {
         justify-content: center;
