@@ -11,16 +11,16 @@ import { PortfolioService } from '../../services/portfolio.service';
       <div class="container">
         <div class="about-grid">
           <div class="about-left">
-            <div class="section-label">Sobre mi</div>
+            <div class="section-label">Sobre mí</div>
             <h2 class="section-title">
               Código con <span>propósito</span>
             </h2>
             <p class="about-text">{{ info().about }}</p>
             <p class="about-text">
-              He trabajado en mantenimiento y montaje de equipos informaticos, asistencia remota, redes y creacion de paginas web con WordPress. Tambien he desarrollado soluciones con Power Apps y aplicaciones en Python para automatizar entornos de preproduccion y produccion.
+              He trabajado en mantenimiento y montaje de equipos informáticos, asistencia remota, redes y creación de páginas web con WordPress. También he desarrollado soluciones con Power Apps y aplicaciones en Python para automatizar entornos de preproducción y producción.
             </p>
             <p class="about-text">
-              Mi formacion combina el Grado Medio en Sistemas Microinformaticos y Redes, el desarrollo cloud y el Grado Superior en Desarrollo de Aplicaciones Web, que estoy cursando entre 2024 y 2026.
+              Mi formación combina el Grado Medio en Sistemas Microinformáticos y Redes, el desarrollo cloud y el Grado Superior en Desarrollo de Aplicaciones Web, que estoy cursando entre 2024 y 2026.
             </p>
             <div class="about-details">
               <div class="detail">
@@ -33,7 +33,7 @@ import { PortfolioService } from '../../services/portfolio.service';
               </div>
               <div class="detail">
                 <span class="detail-key">disponible</span>
-                <span class="detail-val available" *ngIf="info().availableForWork">✓ si, para nuevas oportunidades</span>
+                <span class="detail-val available" *ngIf="info().availableForWork">✓ Sí, para nuevas oportunidades</span>
                 <span class="detail-val" *ngIf="!info().availableForWork">actualmente ocupado</span>
               </div>
               <div class="detail">
@@ -64,7 +64,7 @@ import { PortfolioService } from '../../services/portfolio.service';
     <span class="c-str">"SQL"</span>, <span class="c-str">"JavaScript"</span>
   ],
   <span class="c-key">passions</span>: [
-    <span class="c-str">"tecnologia con impacto"</span>,
+    <span class="c-str">"tecnología con impacto"</span>,
     <span class="c-str">"aprendizaje continuo"</span>,
     <span class="c-str">"ayudar a clientes"</span>
   ],

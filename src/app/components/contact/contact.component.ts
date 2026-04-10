@@ -33,7 +33,7 @@ const EMAILJS_TEMPLATE_ID: string = 'template_f8pm19o';
               <a [href]="'tel:' + info().phone" class="contact-link">
                 <div class="cl-icon">☎</div>
                 <div>
-                  <span class="cl-label">Telefono</span>
+                  <span class="cl-label">Teléfono</span>
                   <span class="cl-val">{{ info().phone }}</span>
                 </div>
               </a>
@@ -48,7 +48,7 @@ const EMAILJS_TEMPLATE_ID: string = 'template_f8pm19o';
                 <div class="cl-icon">🎓</div>
                 <div>
                   <span class="cl-label">Formación</span>
-                  <span class="cl-val">DAW + Sistemas Microinformaticos y Redes + Cloud</span>
+                  <span class="cl-val">DAW + Sistemas Microinformáticos y Redes + Cloud</span>
                 </div>
               </div>
               <a [href]="'https://github.com/' + info().github" target="_blank" class="contact-link">

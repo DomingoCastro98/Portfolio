@@ -19,7 +19,7 @@ import { ThemeService } from '../../services/theme.service';
 
         <div class="nav-links" [class.open]="menuOpen()">
           <a href="#inicio" (click)="close()">Inicio</a>
-          <a href="#sobre-mi" (click)="close()">Sobre mi</a>
+          <a href="#sobre-mi" (click)="close()">Sobre mí</a>
           <a href="#habilidades" (click)="close()">Habilidades</a>
           <a href="#proyectos" (click)="close()">Proyectos</a>
           <a href="#contacto" (click)="close()">Contacto</a>

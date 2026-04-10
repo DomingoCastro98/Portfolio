@@ -68,7 +68,7 @@ hljs.registerLanguage('scss', scss);
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
             </svg>
-            Informacion del repo
+            Información del repositorio
           </button>
           <button [class.active]="activeTab() === 'readme'" (click)="setTab('readme')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -116,7 +116,7 @@ hljs.registerLanguage('scss', scss);
               <div class="no-preview">
                 <div class="no-preview-icon">🔗</div>
                 <p>Este repositorio no tiene URL de demo configurada.</p>
-                <p class="hint">Anade una "Homepage" en tu repo de GitHub para habilitar la vista previa.</p>
+                <p class="hint">Añade una "Homepage" en tu repo de GitHub para habilitar la vista previa.</p>
                 <a [href]="repo.html_url" target="_blank" class="btn-accent">Ver en GitHub -></a>
               </div>
             </ng-template>

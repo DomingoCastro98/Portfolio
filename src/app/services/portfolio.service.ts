@@ -29,8 +29,8 @@ export class PortfolioService {
   personalInfo = signal<PersonalInfo>({
     name: 'Domingo Castro',
     title: 'Desarrollador Web Junior',
-    tagline: 'Aprendo rapido, me adapto facil y aporto valor desde el primer dia.',
-    about: `Soy una persona que aprende rapido, aporta optimismo y le gusta trabajar en equipo. Tambien he trabajado durante anos en solitario, lo que me ha dado autonomia y capacidad de adaptacion. Me apasiona la informatica y me gusta usarla para ayudar a personas y clientes a hacer su dia a dia mas facil.`,
+    tagline: 'Aprendo rápido, me adapto fácil y aporto valor desde el primer día.',
+    about: `Soy una persona que aprende rápido, aporta optimismo y le gusta trabajar en equipo. También he trabajado durante años en solitario, lo que me ha dado autonomía y capacidad de adaptación. Me apasiona la informática y me gusta usarla para ayudar a personas y clientes a hacer su día a día más fácil.`,
     location: 'España',
     phone: '+34624605914',
     email: 'domingocastrotech1998@gmail.com',

@@ -24,7 +24,7 @@ import { ProjectModalComponent } from '../project-modal/project-modal.component'
                 </svg>
               </div>
               <div>
-                <h3 class="import-title">Repositorio de Github</h3>
+                <h3 class="import-title">Repositorio de GitHub</h3>
                 <p class="import-desc">Visualiza a tu gusto mis proyectos de GitHub.</p>
               </div>
             </div>
@@ -76,7 +76,7 @@ import { ProjectModalComponent } from '../project-modal/project-modal.component'
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
-            <input type="text" [(ngModel)]="searchQuery" placeholder="buscar repositorio...">
+            <input type="text" [(ngModel)]="searchQuery" placeholder="Buscar repositorio...">
           </div>
           <span class="repos-count">{{ filteredRepos().length }} repositorios</span>
         </div>
