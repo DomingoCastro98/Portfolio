@@ -595,6 +595,18 @@ hljs.registerLanguage('scss', scss);
     }
     .btn-ghost:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.2); }
 
+    :host-context([data-theme='dark']) .info-actions .btn-ghost {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.34);
+      color: #f3f6fb;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+    :host-context([data-theme='dark']) .info-actions .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.48);
+      color: #ffffff;
+    }
+
     @media (max-width: 640px) {
       .info-grid { grid-template-columns: repeat(2, 1fr); }
       .iframe-wrapper { height: 350px; }
