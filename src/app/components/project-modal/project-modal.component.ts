@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { GitHubRepo } from '../../services/github.service';
@@ -249,6 +249,17 @@ npm start
       transition: all 0.2s;
     }
     .modal-close:hover { background: white; color: var(--text-primary); }
+
+    :host-context([data-theme='dark']) .modal-close {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.26);
+      color: #f5f2eb;
+    }
+    :host-context([data-theme='dark']) .modal-close:hover {
+      background: rgba(255, 255, 255, 0.24);
+      border-color: rgba(255, 255, 255, 0.38);
+      color: #ffffff;
+    }
     .modal-tabs {
       display: flex;
       gap: 0;
@@ -472,19 +483,24 @@ npm start
     }
   `]
 })
-export class ProjectModalComponent {
+export class ProjectModalComponent implements OnChanges {
   @Input() repo!: GitHubRepo;
   @Output() close = new EventEmitter<void>();
 
   // Control de pestaña activa y estado de carga del iframe.
   activeTab = signal<'preview' | 'info' | 'readme'>('preview');
   iframeLoading = signal(true);
+  safeUrl: SafeResourceUrl | null = null;
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  get safeUrl(): SafeResourceUrl {
-    // Sanitiza la URL para poder usarla de forma segura en el iframe.
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.repo.homepage || '');
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['repo']) {
+      // Calcula la URL segura una sola vez por repo para evitar recargas continuas del iframe.
+      const homepage = this.repo?.homepage || '';
+      this.safeUrl = homepage ? this.sanitizer.bypassSecurityTrustResourceUrl(homepage) : null;
+      this.iframeLoading.set(true);
+    }
   }
 
   setTab(tab: 'preview' | 'info' | 'readme') {
