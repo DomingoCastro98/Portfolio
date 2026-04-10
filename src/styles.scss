@@ -268,19 +268,19 @@ button {
   color: var(--text-primary);
 }
 
-@media (prefers-color-scheme: light) {
-  .contact-link {
-    background: rgba(255,255,255,0.62) !important;
-    border-color: rgba(31,36,48,0.08) !important;
-  }
-  .contact-link:hover {
-    background: rgba(255,255,255,0.92) !important;
-    border-color: rgba(198,79,61,0.2) !important;
-  }
-  .contact-link.static-link:hover {
-    background: rgba(255,255,255,0.92) !important;
-    border-color: rgba(31,36,48,0.08) !important;
-  }
+:root[data-theme='light'] .contact-link {
+  background: rgba(255,255,255,0.62) !important;
+  border-color: rgba(31,36,48,0.08) !important;
+}
+
+:root[data-theme='light'] .contact-link:hover {
+  background: rgba(223, 221, 221, 0.92) !important;
+  border-color: rgba(198,79,61,0.2) !important;
+}
+
+:root[data-theme='light'] .contact-link.static-link:hover {
+  background: rgba(255,255,255,0.92) !important;
+  border-color: rgba(31,36,48,0.08) !important;
 }
 
 :root[data-theme='dark'] .contact-link {
