@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Angular build output and cache
+dist/
+.angular/
+out-tsc/
+
+# Coverage and test artifacts
+coverage/
+*.lcov
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Local Python env (present in workspace)
+.venv/
+venv/
+
+# Optional local caches
+.cache/
