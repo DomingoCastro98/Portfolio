@@ -1,7 +1,40 @@
-import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 import { GitHubRepo } from '../../services/github.service';
+import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
+import hljs from 'highlight.js/lib/core';
+import typescript from 'highlight.js/lib/languages/typescript';
+import javascript from 'highlight.js/lib/languages/javascript';
+import python from 'highlight.js/lib/languages/python';
+import java from 'highlight.js/lib/languages/java';
+import csharp from 'highlight.js/lib/languages/csharp';
+import json from 'highlight.js/lib/languages/json';
+import bash from 'highlight.js/lib/languages/bash';
+import xml from 'highlight.js/lib/languages/xml';
+import css from 'highlight.js/lib/languages/css';
+import scss from 'highlight.js/lib/languages/scss';
+
+let markdownHighlighterConfigured = false;
+
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('ts', typescript);
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('js', javascript);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('py', python);
+hljs.registerLanguage('java', java);
+hljs.registerLanguage('csharp', csharp);
+hljs.registerLanguage('cs', csharp);
+hljs.registerLanguage('json', json);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('sh', bash);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('html', xml);
+hljs.registerLanguage('css', css);
+hljs.registerLanguage('scss', scss);
 
 @Component({
   selector: 'app-project-modal',
@@ -165,23 +198,13 @@ import { GitHubRepo } from '../../services/github.service';
               <a [href]="repo.html_url + '#readme'" target="_blank" class="btn-accent">
                 Ver README en GitHub ->
               </a>
-              <div class="readme-preview">
-                <pre class="readme-path">
-# {{ repo.name }}
-
-{{ repo.description || 'Sin descripción disponible.' }}
-
-## Instalación
-
-\`\`\`bash
-git clone {{ repo.html_url }}.git
-cd {{ repo.name }}
-npm install
-npm start
-\`\`\`
-
-## Repositorio
-{{ repo.html_url }}</pre>
+              <div class="readme-preview" *ngIf="readmeHtml()" [innerHTML]="readmeHtml()">
+              </div>
+              <div class="readme-loading" *ngIf="readmeLoading()">
+                Cargando README real del repositorio...
+              </div>
+              <div class="readme-error" *ngIf="readmeError()">
+                {{ readmeError() }}
               </div>
             </div>
           </div>
@@ -444,13 +467,108 @@ npm start
       border-radius: var(--radius);
       overflow: hidden;
     }
-    .readme-path {
+    .readme-preview {
+      padding: 1.25rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      overflow-x: auto;
+    }
+    .readme-preview :is(h1,h2,h3,h4) {
+      color: var(--text-primary);
+      margin: 1rem 0 0.6rem;
+      line-height: 1.3;
+    }
+    .readme-preview h1 { font-size: 1.35rem; }
+    .readme-preview h2 { font-size: 1.2rem; }
+    .readme-preview h3 { font-size: 1.05rem; }
+    .readme-preview p,
+    .readme-preview ul,
+    .readme-preview ol,
+    .readme-preview blockquote {
+      margin: 0.65rem 0;
+    }
+    .readme-preview ul,
+    .readme-preview ol {
+      padding-left: 1.1rem;
+    }
+    .readme-preview a {
+      color: var(--accent2);
+      text-decoration: underline;
+    }
+    .readme-preview pre,
+    .readme-preview code {
       padding: 1.25rem;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.8rem;
+    }
+    .readme-preview pre {
+      background: rgba(31,36,48,0.08);
+      border: 1px solid rgba(31,36,48,0.1);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+    }
+    .readme-preview .hljs {
+      display: block;
+      background: transparent;
+      color: var(--text-primary);
+    }
+    .readme-preview .hljs-keyword,
+    .readme-preview .hljs-selector-tag,
+    .readme-preview .hljs-literal,
+    .readme-preview .hljs-section,
+    .readme-preview .hljs-link {
+      color: var(--accent);
+    }
+    .readme-preview .hljs-string,
+    .readme-preview .hljs-attr,
+    .readme-preview .hljs-template-tag,
+    .readme-preview .hljs-template-variable,
+    .readme-preview .hljs-addition {
+      color: var(--accent2);
+    }
+    .readme-preview .hljs-comment,
+    .readme-preview .hljs-quote,
+    .readme-preview .hljs-deletion {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .readme-preview code {
+      background: rgba(31,36,48,0.08);
+      border-radius: 8px;
+      padding: 0.12rem 0.35rem;
+    }
+    .readme-preview pre code {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+    }
+    .readme-preview blockquote {
+      border-left: 3px solid var(--accent-border);
+      padding-left: 0.8rem;
+      color: var(--text-muted);
+    }
+    .readme-preview img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin: 0.5rem 0;
+    }
+    .readme-loading,
+    .readme-error {
+      padding: 1rem 1.1rem;
+      border-radius: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      border: 1px solid rgba(31,36,48,0.08);
+    }
+    .readme-loading {
+      background: rgba(47,111,143,0.08);
       color: var(--text-secondary);
-      line-height: 1.7;
-      white-space: pre-wrap;
+    }
+    .readme-error {
+      background: rgba(198,79,61,0.08);
+      color: var(--text-secondary);
     }
 
     /* Shared button styles */
@@ -486,13 +604,39 @@ npm start
 export class ProjectModalComponent implements OnChanges {
   @Input() repo!: GitHubRepo;
   @Output() close = new EventEmitter<void>();
+  private http = inject(HttpClient);
 
   // Control de pestaña activa y estado de carga del iframe.
   activeTab = signal<'preview' | 'info' | 'readme'>('preview');
   iframeLoading = signal(true);
+  readmeLoading = signal(false);
+  readmeError = signal('');
+  readmeContent = signal('');
+  readmeHtml = signal<SafeHtml | null>(null);
   safeUrl: SafeResourceUrl | null = null;
 
   constructor(private sanitizer: DomSanitizer) {}
+
+  private ensureMarkdownHighlighterConfigured() {
+    if (markdownHighlighterConfigured) {
+      return;
+    }
+
+    marked.use(
+      markedHighlight({
+        langPrefix: 'hljs language-',
+        highlight(code, lang) {
+          const hasLang = !!lang && hljs.getLanguage(lang);
+          if (hasLang) {
+            return hljs.highlight(code, { language: lang }).value;
+          }
+          return hljs.highlightAuto(code).value;
+        }
+      })
+    );
+
+    markdownHighlighterConfigured = true;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['repo']) {
@@ -500,12 +644,59 @@ export class ProjectModalComponent implements OnChanges {
       const homepage = this.repo?.homepage || '';
       this.safeUrl = homepage ? this.sanitizer.bypassSecurityTrustResourceUrl(homepage) : null;
       this.iframeLoading.set(true);
+      this.readmeContent.set('');
+      this.readmeHtml.set(null);
+      this.readmeError.set('');
+      this.readmeLoading.set(false);
     }
   }
 
   setTab(tab: 'preview' | 'info' | 'readme') {
     this.activeTab.set(tab);
     if (tab === 'preview') this.iframeLoading.set(true);
+    if (tab === 'readme') this.loadReadme();
+  }
+
+  private loadReadme() {
+    if (this.readmeLoading() || this.readmeContent() || !this.repo?.full_name) {
+      return;
+    }
+
+    this.readmeLoading.set(true);
+    this.readmeError.set('');
+
+    const url = `https://api.github.com/repos/${this.repo.full_name}/readme`;
+    this.http
+      .get<{ content?: string; encoding?: string }>(url)
+      .subscribe({
+        next: (response) => {
+          if (!response?.content || response.encoding !== 'base64') {
+            this.readmeError.set('No se pudo leer el README de este repositorio.');
+          } else {
+            const markdown = this.decodeReadmeContent(response.content);
+            this.readmeContent.set(markdown);
+            this.readmeHtml.set(this.renderMarkdown(markdown));
+          }
+          this.readmeLoading.set(false);
+        },
+        error: () => {
+          this.readmeError.set('No se pudo cargar el README real. Usa el enlace de GitHub.');
+          this.readmeLoading.set(false);
+        }
+      });
+  }
+
+  private decodeReadmeContent(base64Content: string): string {
+    const cleanBase64 = base64Content.replace(/\n/g, '');
+    const binary = atob(cleanBase64);
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    return new TextDecoder('utf-8').decode(bytes);
+  }
+
+  private renderMarkdown(markdown: string): SafeHtml {
+    this.ensureMarkdownHighlighterConfigured();
+    const html = marked.parse(markdown, { breaks: true, gfm: true }) as string;
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   onOverlayClick(e: MouseEvent) {
